@@ -50,6 +50,9 @@ object Coba5 {
    // val json: JsValue = Json.parse(jn)
   val userList = Json.parse(jn).asOpt[List[User123]]
 
+
+
+
     // apa berbedaan .as, .asOpt, dan validate
     // asOpt : If we are unsure about the content of JsValue then we can use asOpt which will return a None if deserializing causes and exception.
     // validate : If we want a boolean then we can use the validate method which returns JsSuccess and JsError Better to use the validate method to check the parsed json
