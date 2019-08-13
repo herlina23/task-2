@@ -76,9 +76,7 @@ object Coba7 {
       )(unlift(Place.unapply))
 
     //val placeList = Json.parse(jn).asOpt[List[Place]]
-    val json1 = Json.toJson(json)
 
-    println(json1)
   }
 
 
@@ -87,7 +85,11 @@ object Coba7 {
 
 
   def main(args: Array[String]) {
-printJson
+//printJson
+
+    val json1 = Json.toJson(json)
+
+    println(json1)
 
   }
 
