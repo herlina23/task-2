@@ -235,7 +235,10 @@ class Convert{
   //Weather List - weather
 
  // val w_id = f1.map(_.weatherList).map(t=>(t.seq.map(_.weather))).unzip(_.map(t=>(t.seq.map(_.description))))
-  val w_id = f1.map(_.weatherList).map(t=>(t.seq.map(_.weather))).unzip(_.map(t=>(t.seq.map(_.description))))
+  val w_id = f1.map(_.weatherList).map(t=>(t.seq.map(_.weather))).map(_.map(t=>(t.seq.map(_.id))))
+  val w_main = f1.map(_.weatherList).map(t=>(t.seq.map(_.weather))).map(_.map(t=>(t.seq.map(_.main))))
+  val w_description = f1.map(_.weatherList).map(t=>(t.seq.map(_.weather))).map(_.map(t=>(t.seq.map(_.description))))
+  val w_icon = f1.map(_.weatherList).map(t=>(t.seq.map(_.weather))).map(_.map(t=>(t.seq.map(_.icon))))
 
   //Weather List - Main
   val w_temp = f1.map(_.weatherList).map(t=>(t.seq.map(_.main1))).map(t=>(t.seq.map(_.temp)))
@@ -260,7 +263,7 @@ object WeatherForecast{
     val jn = io.Source.fromURL(url).getLines.mkString
 
     val con = new Convert
-    println(con.)
+    println(con.w_kf)
 
 
 
