@@ -1,21 +1,33 @@
-import play.api.libs.json.{Format, JsError, JsSuccess, JsValue, Json}
+package weatherForecast
+
 import play.api.libs.json.Reads._
+import play.api.libs.json._
+
 import scala.util.Try
 
-case class Weather(id:Int,main:String,description:String,icon:String)
-case class Clouds(all:Int)
-case class Wind(speed:Double,deg:Double)
-case class Rain(`3h`:Double)
-case class Sys(pod:String)
-case class Coord(lat:Double,lon:Double)
+case class Weather(id: Int, main: String, description: String, icon: String)
+case class Clouds(all: Int)
+case class Wind(speed: Double, degree: Double)
+case class Rain(`3h`: Double)
+case class Sys(pod: String)
+case class Coordinate(latitude: Double, longitude: Double)
 
-case class Forecast(cod:String, message:Double,cnt:Int, weatherList: Seq[WeatherList],city: City)
-case class WeatherList(dt:Int,main1: Main1,weather: Seq[Weather], clouds: Clouds, wind: Wind, rain: Option[Rain], sys: Sys,dt_txt:String)
-case class City(id:Int,name:String,coord: Coord,country:String,timezone:Int)
+case class Forecast(cod: String, message: Double, cnt: Int, weatherList: Seq[WeatherList], city: City)
+case class WeatherList(date: Int, main1: Main1, weather: Seq[Weather], clouds: Clouds, wind: Wind, rain: Option[Rain], sys: Sys, dateText: String)
+case class City(id: Int, name: String, coordinate: Coordinate, country: String, timezone: Int)
 
-//var url = "http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=f8c2705abbe43a56eaca373e8d86070e"
-//val jn = io.Source.fromURL(url).getLines.mkString
-case class Main1(temp:Double,temp_min:Double,temp_max:Double,pressure:Double, sea_level:Double,grnd_level:Double,humidity:Int,temp_kf:Double)
+case class Main1
+(
+  temperature: Double,
+  temperatureMin: Double,
+  temperatureMax: Double,
+  pressure: Double,
+  seaLevel: Double,
+  groundLevel: Double,
+  humidity: Int,
+  tempKf: Double
+)
+
 object Main1 {
   implicit val jsonFormat: Format[Main1] = new Format[Main1] {
     override def reads(json: JsValue) = Try {
@@ -31,14 +43,14 @@ object Main1 {
     }.fold(err => JsError(err.getMessage), JsSuccess(_))
 
     override def writes(o: Main1) = Json.obj(
-      "temp" -> o.temp,
-      "temp_min" -> o.temp_min,
-      "temp_max" -> o.temp_max,
+      "temp" -> o.temperature,
+      "temp_min" -> o.temperatureMin,
+      "temp_max" -> o.temperatureMax,
       "pressure" -> o.pressure,
-      "sea-level" -> o.sea_level,
-      "grnd_level" -> o.grnd_level,
+      "sea-level" -> o.seaLevel,
+      "grnd_level" -> o.groundLevel,
       "humidity" -> o.humidity,
-      "temp_kf" -> o.temp_kf
+      "temp_kf" -> o.tempKf
     )
   }
 }
@@ -85,7 +97,7 @@ object Wind{
 
     override def writes(o: Wind) = Json.obj(
       "speed" -> o.speed,
-      "deg" -> o.deg
+      "deg" -> o.degree
     )
   }
 }
@@ -116,17 +128,17 @@ object Sys{
   }
 }
 
-object Coord{
-  implicit val jsonFormat: Format[Coord] = new Format[Coord] {
+object Coordinate{
+  implicit val jsonFormat: Format[Coordinate] = new Format[Coordinate] {
     override def reads(json: JsValue) = Try {
       val lat = (json \ "lat").as[Double]
       val lon = (json \ "lon").as[Double]
-      Coord(lat,lon)
+      Coordinate(lat,lon)
     }.fold(err => JsError(err.getMessage), JsSuccess(_))
 
-    override def writes(o: Coord) = Json.obj(
-      "lat" -> o.lat,
-      "lon" -> o.lon
+    override def writes(o: Coordinate) = Json.obj(
+      "lat" -> o.latitude,
+      "lon" -> o.longitude
     )
   }
 }
@@ -136,7 +148,7 @@ object City{
     override def reads(json: JsValue) = Try {
       val id = (json \ "id").as[Int]
       val name = (json \ "name").as[String]
-      val coord = (json \ "coord").as[Coord]
+      val coord = (json \ "coord").as[Coordinate]
       val country = (json \ "country").as[String]
       val timezone = (json \ "timezone").as[Int]
       City(id,name,coord,country,timezone)
@@ -145,7 +157,7 @@ object City{
     override def writes(o: City) = Json.obj(
       "id" -> o.id,
       "name" -> o.name,
-      "coord" -> o.coord,
+      "coord" -> o.coordinate,
       "country" -> o.country,
       "timezone" -> o.timezone
     )
@@ -167,14 +179,14 @@ object WeatherList{
     }.fold(err => JsError(err.getMessage), JsSuccess(_))
 
     override def writes(o: WeatherList) = Json.obj(
-      "dt" -> o.dt,
+      "dt" -> o.date,
       "main" -> o.main1,
       "weather" -> o.weather,
       "clouds" -> o.clouds,
       "wind" -> o.wind,
       "rain" -> o.rain,
       "sys" -> o.sys,
-      "dt_txt" -> o.dt_txt
+      "dt_txt" -> o.dateText
     )
   }
 }
@@ -197,75 +209,5 @@ object Forecast{
       "list" -> o.weatherList,
       "city" -> o.city
     )
-  }
-}
-
-class Convert{
-
-  var url = "http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=f8c2705abbe43a56eaca373e8d86070e"
-  val jn = io.Source.fromURL(url).getLines.mkString
-  val userList2 = Json.parse(jn).asOpt[Forecast]
-
-  // membuat list untuk yang akan di-parsing ke csv
-  // Forecast
-  val f1 = Json.parse(jn).asOpt[Forecast]
-  val f_cod = f1.map(_.cod)
-  val f_message = f1.map(_.message)
-  val f_nct = f1.map(_.cnt)
-
-  // City
-  val c_id = f1.map(_.city).map(_.id)
-  val c_name = f1.map(_.city).map(_.name)
-  val c_coord= f1.map(_.city).map(_.coord)
-  val c_country = f1.map(_.city).map(_.country)
-  val c_timezone = f1.map(_.city).map(_.timezone)
-
-  // Weather List
-  val w_dt = f1.map(_.weatherList).map(t=>(t.seq.map(_.dt)))
-  val w_dtx = f1.map(_.weatherList).map(t=>(t.seq.map(_.dt_txt)))
-  val w_sys = f1.map(_.weatherList).map(t=>(t.seq.map(_.sys))).map(t=>(t.seq.map(_.pod)))
-  val w_cloud= f1.map(_.weatherList).map(t=>(t.seq.map(_.clouds))).map(t=>(t.seq.map(_.all)))
-
-  //val w_rain = f1.map(_.weatherList).map(t=>(t.seq.map(_.rain))).map(t=>(t.seq.map(_."3h")))
-
-  // Weather List - wind
-  val w_speed = f1.map(_.weatherList).map(t=>(t.seq.map(_.wind))).map(t=>(t.seq.map(_.speed)))
-  val deg = f1.map(_.weatherList).map(t=>(t.seq.map(_.wind))).map(t=>(t.seq.map(_.deg)))
-
-  //Weather List - weather
-
- // val w_id = f1.map(_.weatherList).map(t=>(t.seq.map(_.weather))).unzip(_.map(t=>(t.seq.map(_.description))))
-  val w_id = f1.map(_.weatherList).map(t=>(t.seq.map(_.weather))).map(_.map(t=>(t.seq.map(_.id))))
-  val w_main = f1.map(_.weatherList).map(t=>(t.seq.map(_.weather))).map(_.map(t=>(t.seq.map(_.main))))
-  val w_description = f1.map(_.weatherList).map(t=>(t.seq.map(_.weather))).map(_.map(t=>(t.seq.map(_.description))))
-  val w_icon = f1.map(_.weatherList).map(t=>(t.seq.map(_.weather))).map(_.map(t=>(t.seq.map(_.icon))))
-
-  //Weather List - Main
-  val w_temp = f1.map(_.weatherList).map(t=>(t.seq.map(_.main1))).map(t=>(t.seq.map(_.temp)))
-  val w_min = f1.map(_.weatherList).map(t=>(t.seq.map(_.main1))).map(t=>(t.seq.map(_.temp_min)))
-  val w_max = f1.map(_.weatherList).map(t=>(t.seq.map(_.main1))).map(t=>(t.seq.map(_.temp_max)))
-  val w_pressure = f1.map(_.weatherList).map(t=>(t.seq.map(_.main1))).map(t=>(t.seq.map(_.pressure)))
-  val w_sea = f1.map(_.weatherList).map(t=>(t.seq.map(_.main1))).map(t=>(t.seq.map(_.sea_level)))
-  val w_grnd = f1.map(_.weatherList).map(t=>(t.seq.map(_.main1))).map(t=>(t.seq.map(_.grnd_level)))
-  val w_humidity = f1.map(_.weatherList).map(t=>(t.seq.map(_.main1))).map(t=>(t.seq.map(_.humidity)))
-  val w_kf = f1.map(_.weatherList).map(t=>(t.seq.map(_.main1))).map(t=>(t.seq.map(_.temp_kf)))
-
-
-}
-
-
-
-object WeatherForecast{
-
-  def main(args: Array[String]) {
-
-    var url = "http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=f8c2705abbe43a56eaca373e8d86070e"
-    val jn = io.Source.fromURL(url).getLines.mkString
-
-    val con = new Convert
-    println(con.w_kf)
-
-
-
   }
 }
