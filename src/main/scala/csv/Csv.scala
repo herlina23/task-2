@@ -15,6 +15,7 @@ case class Row
   seaLevel: Double,
   groundLevel: Double,
   humidity: Int,
+
   weatherDesc: String,
   windSpeed: Double,
   windDegree: Double,
@@ -22,7 +23,6 @@ case class Row
   cityName: String
 ) {
   override def toString = List(
-    temperature,
-    temperatureMin
+    temperature, temperatureMin,temperatureMax,pressure,seaLevel,groundLevel,humidity, weatherDesc, windDegree, windSpeed,dateText,cityName
   ).mkString(",")
 }
