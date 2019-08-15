@@ -1,7 +1,9 @@
-import csv.{Csv, Row,Header}
-import play.api.libs.json.Json
+import csv.{Csv, Header, Row}
+import play.api.libs.json.{JsError, JsSuccess, Json}
 import weatherForecast.Forecast
 
+import scala.util.Success
+import scala.util.Failure
 import java.io._
 
 object Main {
@@ -22,28 +24,29 @@ object Main {
           weatherList.main1.temperature,weatherList.main1.temperatureMin,weatherList.main1.temperatureMax, weatherList.main1.pressure, weatherList.main1.seaLevel,weatherList.main1.groundLevel,weatherList.main1.humidity, weatherList.weather.map(_.description).mkString,weatherList.wind.speed, weatherList.wind.degree, weatherList.dateText, forecast.city.name
         )
       }
-      //Csv(rowList.toList,Header(hdr))
       Csv(rowList.toList,Header(hdr))
     }
-    //csvOpt.foreach(_.toString)
-    //weatherList.weather.map(_.description).toString
 
-
-
-   // bikin error handle, jabarin bingung dmn, kpn pake optioon, either, try
-    //
 
     val cc = csvOpt.toList.mkString("\n")
+    //println(cc)
 
-    println(cc)
+    val test = jsonValue.validate[Forecast]
 
 
+    val run1= test match {
+      case JsSuccess(test,_) => {
+            val pw = new PrintWriter(new File("weather_4.csv" ))
+            pw.write(cc)
+            pw.close
+        println("Csv is already generated")
+      }
+      case JsError(errors)=> println("Failed, Can not generate csv"+"\n"+test)
+    }
 
-//    val pw = new PrintWriter(new File("weather_3.csv" ))
-//    pw.write(cc)
-//    pw.close
+    println(run1)
 
-// buat header dr class csv
+
 
   }
 

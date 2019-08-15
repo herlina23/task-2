@@ -1,5 +1,6 @@
 package weatherForecast
 
+
 import play.api.libs.json.Reads._
 import play.api.libs.json._
 
@@ -47,7 +48,7 @@ object Main1 {
       "temp_min" -> o.temperatureMin,
       "temp_max" -> o.temperatureMax,
       "pressure" -> o.pressure,
-      "sea-level" -> o.seaLevel,
+      "sea_level" -> o.seaLevel,
       "grnd_level" -> o.groundLevel,
       "humidity" -> o.humidity,
       "temp_kf" -> o.tempKf

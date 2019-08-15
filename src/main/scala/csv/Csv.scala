@@ -3,22 +3,19 @@ package csv
 case class Csv(rows: List[Row],header: Header) {
   override def toString: String = {
     val body = rows.map(_.toString).mkString("\n")
-    val str = header.head+"\n"+body
+    val str = header.toString+"\n"+body
     str
   }
 }
 
-//case class Csv(rows: List[Row],header: Header)
-
-//class Header{
-//  val abc = List("Temperature","Temperature Min","Temperature Max","Pressure","Sea Level","Ground Level","Humidity","Description","Wind Speed","Wind Degree","Date","City")
-//}
 
 case class Header(head: List[String]) {
   override def toString: String = {
     val head1 = head.mkString(",")
     head1
+    //head.mkString(",")-> fungsinya adalah untuk menjadikan Lis of string jadi String
   }
+
 }
 
 case class Row
