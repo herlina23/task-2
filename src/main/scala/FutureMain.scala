@@ -46,8 +46,11 @@ object FutureMain {
 
     val t2 = Await.result(t1,1 seconds) match {
       case JsSuccess(t1,_) => {
-        println(convPrint)
-      }
+        val pw = new PrintWriter(new File("weather_Future.csv" ))
+        pw.write(convPrint)
+        pw.close
+        println("Csv is already generated")
+             }
       case JsError(errors)=> println("Failed, Can not generate csv"+"\n"+t1)
     }
 
