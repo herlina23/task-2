@@ -2,6 +2,10 @@ import csv.{Csv, Header, Row}
 import play.api.libs.json.{JsError, JsSuccess, Json}
 import weatherForecast.Forecast
 
+import csv.{Csv, Header, Row}
+import play.api.libs.json.{JsError, JsSuccess, Json}
+import weatherForecast.Forecast
+
 import scala.util.Success
 import scala.util.Failure
 import java.io._
@@ -36,9 +40,9 @@ object Main {
 
     val run1= test match {
       case JsSuccess(test,_) => {
-            val pw = new PrintWriter(new File("weather_4.csv" ))
-            pw.write(cc)
-            pw.close
+        val pw = new PrintWriter(new File("weather_4.csv" ))
+        pw.write(cc)
+        pw.close
         println("Csv is already generated")
       }
       case JsError(errors)=> println("Failed, Can not generate csv"+"\n"+test)

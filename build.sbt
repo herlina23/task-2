@@ -5,6 +5,7 @@ version := "0.1"
 scalaVersion := "2.12.7"
 
 libraryDependencies += "com.github.tototoshi" %% "scala-csv" % "1.3.6"
+libraryDependencies += "org.scala-lang.modules" %% "scala-async" % "0.10.0"
 
 
 //libraryDependencies += "com.typesafe.play" % "play-json_2.11" % "2.6.7"
