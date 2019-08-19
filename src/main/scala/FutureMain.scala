@@ -32,19 +32,37 @@ object Main {
 
       val jsonStr = io.Source.fromURL(url).getLines.mkString
       // jsonStr berfungsi mengambil data dari API yang sudah didefinisi, dimana data dari API dibaca dengan  io.Source.fromURL,dibaca per line dengan .getLines dan melakukan join tiap line dengan .mkString
-
+      // @correction = jsonStr adalah variabel, tidak mungkin ada aksi aktif yang bisa dikerjakan oleh variabel
       val jsonValue = Json.parse(jsonStr)
       // jsonValue melakukan parsing dari suatu string JSON menjadi suatu scala object
-
+      // @correction = jsonValue adalah variabel, tidak mungkin ada aksi aktif yang bisa dikerjakan oleh variabel
       val forecastOpt = jsonValue.asOpt[Forecast]
       //forecastOpt melakukan konversi dari suatu json value menjadi suatu collection Forecast dengan menggunakan asOpt menjadi suatu Option type, sehingga program akann tetap berjalan meskipun ada kesalahan
-
+      // @correction = forecastOpt adalah variabel, tidak mungkin ada aksi aktif yang bisa dikerjakan oleh variabel
+      /**
+        * @correction
+        * forecastOpt adalah variabel dengan tipe Option[Forecast]
+        * ketika forecastOpt.map() dijalankan, map() akan mengubah concrete value yang ada di dalam forecastOpt
+        * berdasarkan anonymous function yang jadi argumen map() jika forecastOpt adalah Some[Forecast].
+        * Jika forecastOpt adalah None, map() tidak akan bisa mengubah None menjadi None lain
+        * */
       val csvOpt = forecastOpt.map { forecast =>
+
         //pada csvOpt kita akan melakukan mapping pada collection forecastOpt, collection yang akan di-mapping didalamnya adalah forecast.
 
+        /**
+          * @correction
+          * forecast adalah concrete value bertipe Forecast yang dikandung oleh forecastOpt jika dan hanya jika forecastOpt bertipe Some[Forecast]
+          * forecast.weatherList adalah field dari Forecast yang bertipe data List[WeatherList]
+          * oleh karena itu ketika forecast.weatherList.map() dijalankan, map() akan mengubah List[WeatherList] menjadi List[A],
+          * sesuai dengan tipe kembalian dari anonymous function yang menjadi argumen dari map
+          * untuk kasus di bawah, map() memiliki tipe WeatherList => Row, sehingga map() di bawah ini
+          * akan mengubah List[WeatherList] menjadi List[Row]
+          *
+          * */
         val rowList = forecast.weatherList.map { weatherList =>
           //setelah memasuki collection forecast, kita akan melaukkan mapping, untuk mendapat value dari weatherlist yang berada di dalam collection forecast
-
+          // @correction = forecast bukan collection
           Row(
             // Row -> mengakses sebuat case class didalam Csv yang berisi definisi dari kolom-kolom yang akan ditampilkan pada file CSV
 
@@ -58,12 +76,12 @@ object Main {
       }
       csvOpt
       // mendefinisikan variabel csvOpt
-
+      // @correction = csvOpt adalah sebuah variabel bertipe Option[Csv]
       //dibawah ini adalah method untuk melakukan validasi (success or failure)
     }.flatMap { csvOpt =>
       //setelah didefinisikan (namanya apa ?) sbg collection, maka kita akan melakuka flatmap()
       // menggabungkan banyak array (nested) menjadi satu kesatuan Array. yang nantinya memudahkan untuk melakukan validasi
-
+      // @correction = penjelasan di atas tidak jelas, kemudian flatMap di kasus ini tidak melibatkan Array
       csvOpt match {
         // disini kita akan melakukan match terhadap suatu kondisi yang akan dihadapi oleh collection csvOpt
 
