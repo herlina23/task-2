@@ -122,8 +122,9 @@ object Main {
     }.flatMap { csvOpt =>
       /**
         * @correction = flatMap() tidak mengubah Option[Csv] menjadi Future[S]
-        * flatmap() pada usecase ini,  memungkinkan secara eksplisit membungkus nilai Future pada csvOpt
-        * untuk menjadikan return value-nya sebagai suatu callback (success / failed)
+        *
+        * flatmap () berfungsi untuk mengubah container type yang ia akses diawal menjadi suatu container type baru dengan fungsi tertentu
+        * misalnya menjadi function callback, dimana dalam hal ini menggunakan container option, maka callback yang digunakan Some & None
         * */
 
       csvOpt match {
