@@ -24,8 +24,9 @@ object Main {
     val hdr = List("Temperature","Temperature Min","Temperature Max","Pressure","Sea Level","Ground Level","Humidity","Description","Wind Speed","Wind Degree","Date","City")
         /**
       * @correction = A mestinya dijabarkan tipenya apa karena hdr merupakan variable; variabel memiliki tipe yang konkret
-      * hdr adalah variabel dengan tipe List[A]
-      * berisi list header yang akan digunakana pada CSV
+          *
+      * hdr adalah variabel dengan tipe List[String]
+      * berisi kumpulan string yang akan menjadi header pada file CSV
       *
       * */
 
@@ -44,7 +45,9 @@ object Main {
       val jsonStr = io.Source.fromURL(url).getLines.mkString
       /**
         * @correction = karena jsonStr adalah variabel, maka tidak mungkin variabel dijalankan
-        * jsonStr adalah variabel dimana ketika dijalankan, io.Source.fromURL akan membaca data dari link variabel url menjadi BufferedSource
+        *
+        * jsonStr adalah variabel bertipe String
+        * mengakses io.Source.fromURL untuk membaca data dari url menjadi BufferedSource
         * kemudian getLines akan mengubah buffered source menjadi non empty iterator
         * setelah itu, .mkString akan menjadikan non-empty-iterator menjadi string
         * */
@@ -52,7 +55,9 @@ object Main {
       val jsonValue = Json.parse(jsonStr)
       /**
         * @correction = karena jsonValue adalah variabel, maka tidak mungkin variabel dijalankan
-        * jsonValue adalah variabel yang ketika dijalankan, Json.parse() akan menjadikan jsonStr yang merupakan JSON String menjadi jsonvalue
+        *
+        * jsonValue adalah variabel bertipe JsValue
+        * mengakses Json.parse() akan menjadikan jsonStr yang sebelumnya merupakan JSON String menjadi JsValue
         * */
 
       val forecastOpt = jsonValue.asOpt[Forecast]
@@ -90,6 +95,7 @@ object Main {
             //diatas ini adalah isi dari tiap field yang akan ditampilkan pada CSV
             /**
               * @correction = weatherList.main1 tipenya bukan List[main1]
+              *
               * didalam Row() terdapat beberapa parameter
               * parameter tersebut diakses dari  weatherList.main1 bertipe List[main1],
               * dimana didalamnya terdapat beberapa value seperti temperature, pressure dll
@@ -115,7 +121,8 @@ object Main {
     }.flatMap { csvOpt =>
       /**
         * @correction = flatMap() tidak mengubah Option[Csv] menjadi Future[S]
-        * flatmap() akan mengubah Option[Csv] menjadi Future[S]
+        * flatmap() pada usecase ini,  memungkinkan secara eksplisit membungkus nilai Future pada csvOpt
+        * untuk menjadikan return value-nya sebagai suatu callback (success / failed)
         * */
 
       csvOpt match {
