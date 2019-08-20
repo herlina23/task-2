@@ -97,8 +97,9 @@ object Main {
               * @correction = weatherList.main1 tipenya bukan List[main1]
               *
               * didalam Row() terdapat beberapa parameter
-              * parameter tersebut diakses dari  weatherList.main1 bertipe List[main1],
-              * dimana didalamnya terdapat beberapa value seperti temperature, pressure dll
+              * parameter tersebut diakses dari  weatherList.main1 bertipe case class WeatherList,
+              * didalam case class WeatherList terdapat parameter main1, dimana main1 ini juga adalah case class tersendiri
+              * dimana didalam case class Main1 terdapat beberapa value seperti temperature, pressure dll
               * */
 
           )
