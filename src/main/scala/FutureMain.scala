@@ -111,9 +111,6 @@ object Main {
       /**
         * flatmap() akan mengubah Option[Csv] menjadi Future[S]
         * */
-      //setelah didefinisikan (namanya apa ?) sbg collection, maka kita akan melakuka flatmap()
-      // menggabungkan banyak array (nested) menjadi satu kesatuan Array. yang nantinya memudahkan untuk melakukan validasi
-      // @correction = penjelasan di atas tidak jelas, kemudian flatMap di kasus ini tidak melibatkan Array
 
       csvOpt match {
         // disini kita akan melakukan match terhadap suatu kondisi yang akan dihadapi oleh collection csvOpt
@@ -128,16 +125,14 @@ object Main {
             * */
 
           val cc = csvOpt.toList.mkString("\n")
-          //cc adalah variabel yang didalmnya terdapat csvOpt yang bertipe Option[Csv]
-          // yang sudah dikonversi menjadi list yang sudah dipisahkan dengan new line("\n")
-          /**
+/**
             * cc adalah variabel yang didalmnya terdapat csvOpt yang bertipe Option[Csv]
             * dimana csvOpt akan dijadikan List dengan .toList
             * setelah itu tiap nilai dari List akan diprint dengan new line("\n") dengan .mkString
             * */
 
           val pw = new PrintWriter(new File("weather_future.csv" ))
-          // pw menghasilkan new class dari PrintWriter untuk melakukan write pada file system, dengan path dan nama tertentu
+
           /**
             *variabel pw mengakses class yang disediakan oleh java io
             * pertama variabel pw akan mengakses new class PrintWriter(File file), dimana parameternya adalah File
@@ -145,7 +140,7 @@ object Main {
             * */
 
           pw.write(cc)
-          // setelah itu menuliskan value yang disimpan pada variabel cc ke file csv
+
           /**
             *write(cc) akan menuliskan file yang disimpan dalam variabel cc ke dalam file csv
             * */
@@ -173,7 +168,7 @@ object Main {
 
 
     val result: Unit = Await.result(future,1.minute)
-    // val result digunakan untuk memanggil hasil dari eksekusi Future dimana pemanggilan hasil Future dengan Await, dengan 2 parameter input, yaitu variabel future dan durasi
+
     /**
       * val result bertipe Unit yang akan menampung hasil balikan Future dengan fungsi Await
       * .result(Awaitable[T],Duration) memiliki 2 parameter yaitu Awaitable yang berupa variabel yang telah mengimplementasi Future dan Duration
