@@ -110,7 +110,7 @@ object Main {
           * Csv adalah case class yang memiliki 2 parameter input, yaitu body dan header
           * rowList adalah variable bertipe seq[Row] hasil dari mapping dari forecast.weatherList.map
           * kemudian untuk menjadikannya list makan rowList dikonversi .toList
-          * Header() adalah case class yang berisi hdr, yang merupakan List[] dari header yang akan di-write ke CSV
+          * Header() adalah case class yang berisi parameter hdr, yang merupakan List[String] dari header yang akan di-write ke CSV
           * * */
 
       }
@@ -123,7 +123,7 @@ object Main {
       /**
         * @correction = flatMap() tidak mengubah Option[Csv] menjadi Future[S]
         *
-        * flatmap () berfungsi untuk mengubah container type yang ia akses diawal menjadi suatu container type baru dengan fungsi tertentu
+        * flatmap () berfungsi untuk mengubah collection yang ia akses diawal menjadi suatu collection baru dengan fungsi tertentu
         * misalnya menjadi function callback, dimana dalam hal ini menggunakan container option, maka callback yang digunakan Some & None
         * */
 
