@@ -23,8 +23,10 @@ object Main {
   def main(args: Array[String]): Unit = {
     val hdr = List("Temperature","Temperature Min","Temperature Max","Pressure","Sea Level","Ground Level","Humidity","Description","Wind Speed","Wind Degree","Date","City")
         /**
+      * @correction = A mestinya dijabarkan tipenya apa karena hdr merupakan variable; variabel memiliki tipe yang konkret
       * hdr adalah variabel dengan tipe List[A]
       * berisi list header yang akan digunakana pada CSV
+      *
       * */
 
     val future: Future[Unit] = Future {
@@ -41,6 +43,7 @@ object Main {
 
       val jsonStr = io.Source.fromURL(url).getLines.mkString
       /**
+        * @correction = karena jsonStr adalah variabel, maka tidak mungkin variabel dijalankan
         * jsonStr adalah variabel dimana ketika dijalankan, io.Source.fromURL akan membaca data dari link variabel url menjadi BufferedSource
         * kemudian getLines akan mengubah buffered source menjadi non empty iterator
         * setelah itu, .mkString akan menjadikan non-empty-iterator menjadi string
@@ -48,6 +51,7 @@ object Main {
 
       val jsonValue = Json.parse(jsonStr)
       /**
+        * @correction = karena jsonValue adalah variabel, maka tidak mungkin variabel dijalankan
         * jsonValue adalah variabel yang ketika dijalankan, Json.parse() akan menjadikan jsonStr yang merupakan JSON String menjadi jsonvalue
         * */
 
@@ -85,6 +89,7 @@ object Main {
             weatherList.main1.temperature, weatherList.main1.temperatureMin, weatherList.main1.temperatureMax, weatherList.main1.pressure, weatherList.main1.seaLevel, weatherList.main1.groundLevel, weatherList.main1.humidity, weatherList.weather.map(_.description).mkString, weatherList.wind.speed, weatherList.wind.degree, weatherList.dateText, forecast.city.name
             //diatas ini adalah isi dari tiap field yang akan ditampilkan pada CSV
             /**
+              * @correction = weatherList.main1 tipenya bukan List[main1]
               * didalam Row() terdapat beberapa parameter
               * parameter tersebut diakses dari  weatherList.main1 bertipe List[main1],
               * dimana didalamnya terdapat beberapa value seperti temperature, pressure dll
@@ -109,6 +114,7 @@ object Main {
 
     }.flatMap { csvOpt =>
       /**
+        * @correction = flatMap() tidak mengubah Option[Csv] menjadi Future[S]
         * flatmap() akan mengubah Option[Csv] menjadi Future[S]
         * */
 
